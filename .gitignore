@@ -5,6 +5,8 @@
 .env.production
 .phpactor.json
 .phpunit.result.cache
+/.yarn
+/.yarn/*
 /.fleet
 /.idea
 /.nova
@@ -12,6 +14,7 @@
 /.vscode
 /.zed
 /auth.json
+/bootstrap/ssr
 /node_modules
 /public/build
 /public/hot
