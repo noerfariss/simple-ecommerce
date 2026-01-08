@@ -13,6 +13,10 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    public function index()
+    {
+        return 'dashboard';
+    }
     /**
      * Display the user's profile form.
      */
