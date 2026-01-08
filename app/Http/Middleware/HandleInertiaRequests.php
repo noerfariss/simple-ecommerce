@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\CartCacheService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -31,6 +32,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user = $request->user();
+        $cartservice = new CartCacheService();
 
         return [
             ...parent::share($request),
@@ -38,11 +40,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $user,
             ],
             'cart' => $user
-                ? (
-                    cache()->has('cart-' . $user->id)
-                    ? collect(cache('cart-' . $user->id))->sum('qty')
-                    : 0
-                )
+                ? collect($cartservice->get())->sum('qty')
                 : 0,
             'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
