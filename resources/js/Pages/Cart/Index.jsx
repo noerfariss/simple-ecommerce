@@ -133,7 +133,11 @@ const Index = ({ datacart = [] }) => {
             {
                 datacart.length > 0 && (
                     <div className='flex w-full justify-center mt-12'>
-                        <button type='button' className='bg-blue-700 text-center items-center text-white px-12 py-2 rounded-md hover:bg-green-700'>
+                        <button
+                            type='button'
+                            className='bg-blue-700 text-center items-center text-white px-12 py-2 rounded-md hover:bg-green-700'
+                            onClick={() => router.post(route('cart.store'))}
+                        >
                             Process Order
                         </button>
                     </div>

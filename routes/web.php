@@ -23,6 +23,7 @@ Route::middleware('auth')->prefix('auth')->group(function () {
         Route::get('/{product}/add', [CartController::class, 'add'])->name('add');
         Route::put('/{product}', [CartController::class, 'update'])->name('update');
         Route::delete('/{product}', [CartController::class, 'remove'])->name('remove');
+        Route::post('/', [CartController::class, 'store'])->name('store');
     });
 });
 

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Class\CartCacheClass;
+use App\Enums\OrderEnum;
 use App\Facade\CartCache;
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Services\CartCacheService;
 use Illuminate\Support\Facades\DB;
@@ -131,6 +134,63 @@ class CartController extends Controller
             DB::rollBack();
 
             return redirect()->back()->with('error', 'Process failed');
+        }
+    }
+
+    public function store(CartCacheService $cartservice)
+    {
+        DB::beginTransaction();
+
+        try {
+            $cartItems = Cart::with('product')
+                ->where('user_id', Auth::id())
+                ->lockForUpdate()
+                ->get();
+
+            if ($cartItems->isEmpty()) {
+                return back()->with('error', 'Cart is empty');
+            }
+
+            $total = $cartItems->sum('subtotal');
+
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'invoice' => 'INV-' . now()->format('YmdHis') . '-' . Auth::id(),
+                'total' => $total,
+                'status' => OrderEnum::PENDING->value
+            ]);
+
+            foreach ($cartItems as $item) {
+                $product = $item->product;
+
+                if ($item->qty > $product->stock_quantity) {
+                    throw new \Exception("Stock not enough for {$product->name}");
+                }
+
+                // Create Order Item
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'price' => $product->price,
+                    'qty' => $item->qty,
+                    'subtotal' => $item->subtotal,
+                ]);
+
+                $product->decrement('stock_quantity', $item->qty);
+            }
+
+            Cart::where('user_id', Auth::id())->delete();
+            $cartservice->refresh();
+
+            DB::commit();
+
+            return redirect()->route('product.index')->with('success', 'Order created');
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Order failed');
         }
     }
 }
