@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductFilterRequest;
 use App\Models\Product;
+use App\Services\CartCacheService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -19,7 +20,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function all(ProductFilterRequest $request)
+    public function all(ProductFilterRequest $request, CartCacheService $cartservice)
     {
         $search = $request->search;
         $min = $request->min;

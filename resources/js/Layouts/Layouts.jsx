@@ -8,7 +8,7 @@ const Layouts = ({ children }) => {
         <div className='mx-auto bg-blue-50 min-h-dvh flex flex-col'>
             <Header />
 
-            <div className='mx-auto w-full max-w-6xl mt-6'>
+            <div className='mx-auto w-full max-w-6xl mt-16'>
                 {children}
             </div>
 

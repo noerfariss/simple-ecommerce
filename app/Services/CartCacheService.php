@@ -21,6 +21,7 @@ class CartCacheService
     public function refresh()
     {
         Cache::forget($this->cacheID());
+        $this->get();
     }
 
     public function get()

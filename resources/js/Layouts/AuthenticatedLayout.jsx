@@ -30,6 +30,11 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('product.index')}
+                                >
+                                    Products
+                                </NavLink>
                             </div>
                         </div>
 
@@ -134,6 +139,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">

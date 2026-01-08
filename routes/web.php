@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -8,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, 'index'])->name('product.index');
 Route::get('/products', [ProductController::class, 'all'])->name('product.all');
+Route::get('contact', ContactController::class)->name('contact');
 
 Route::middleware('auth')->prefix('auth')->group(function () {
     Route::get('/', [ProfileController::class, 'index'])->name('dashboard');
