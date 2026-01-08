@@ -16,7 +16,7 @@ const Header = () => {
                     </div>
 
                     <div className='flex gap-4'>
-                        <Link as={'button'} href={route('product.index')} className='flex items-center gap-1 relative bg-blue-100 pr-4 rounded-full hover:bg-blue-700 hover:text-white'>
+                        <Link as={'button'} href={route('cart.index')} className='flex items-center gap-1 relative bg-blue-100 pr-4 rounded-full hover:bg-blue-700 hover:text-white'>
                             <span className={`w-6 h-6 text-xs font-bold  ${auth.user ? 'bg-red-700 text-white' : 'bg-gray-200'} items-center justify-center flex rounded-full`}>{cart}</span>
                             <ShoppingBasket size={16} />Cart
                         </Link>
