@@ -4,8 +4,9 @@ import { InfiniteScroll, router, useForm, usePage } from '@inertiajs/react';
 import { Box } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
+import Sidebar from './Sidebar';
 
-const All = ({ products }) => {
+const All = ({ products, filters }) => {
     const { flash } = usePage().props;
     const [isLoading, setIsLoading] = useState(false);
 
@@ -32,18 +33,34 @@ const All = ({ products }) => {
         })
     }
 
+    const { data, setData, get, processing, errors } = useForm({
+        search: filters.search || '',
+        min: filters.min || '',
+        max: filters.max || ''
+    })
+
+    const handleFilter = (e) => {
+        e.preventDefault();
+        get(route('product.all'));
+    }
+
     return (
         <Layouts>
             <h2 className='text-lg mb-6 font-bold'>All Products</h2>
 
             <div className='grid grid-cols-12 gap-6'>
-                <div className='col-span-3 border border-red-600'>
-                    fsf
+                <div className='col-span-3'>
+                    <Sidebar data={data} setData={setData} onFilter={handleFilter} />
                 </div>
+
                 <div className='col-span-9'>
                     <InfiniteScroll data='products'>
                         <div className='grid grid-cols-12 gap-4'>
-                            {products.data.map((item) => {
+
+                            {
+                            products.data.length > 0
+                            ?
+                            products.data.map((item) => {
                                 return (
                                     <div key={item.id} className='col-span-4'>
                                         <Card className='p-4'>
@@ -62,9 +79,9 @@ const All = ({ products }) => {
                                                 </p>
 
                                                 <button
-                                                    disabled={isLoading}
+                                                    disabled={isLoading || item.stock_quantity == 0}
                                                     type='button'
-                                                    className={`${isLoading ? 'bg-gray-200 text-gray-500' : 'bg-blue-700 text-white'} text-sm font-semibold px-2 rounded-sm py-1 hover:bg-green-700`}
+                                                    className={`${isLoading || item.stock_quantity == 0 ? 'bg-gray-200 text-gray-500' : 'bg-blue-700 text-white'} text-sm font-semibold px-2 rounded-sm py-1 ${item.stock_quantity != 0 && 'hover:bg-green-700'}`}
                                                     onClick={() => handleAddToCart(item.slug)}
                                                 >
                                                     {isLoading ? 'Loading...' : ' Add to Cart'}
@@ -73,7 +90,9 @@ const All = ({ products }) => {
                                         </Card>
                                     </div>
                                 )
-                            })}
+                            })
+                            : <h4 className='w-full col-span-12 text-center py-6 bg-gray-100 rounded-lg border border-gray-300'>Product is not available</h4>
+                            }
 
                         </div>
                     </InfiniteScroll>
