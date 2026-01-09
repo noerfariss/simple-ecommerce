@@ -1,5 +1,5 @@
 # Simple e-Commerce Shopping Cart
-This project is built using **Laravel** as the backend and **Inertia.js with React** as the frontend.
+Job Tasks at Trustfactory | This project is built using **Laravel** as the backend and **Inertia.js with React** as the frontend.
 
 ---
 
