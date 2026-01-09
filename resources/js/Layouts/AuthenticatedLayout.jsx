@@ -35,11 +35,17 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Products
                                 </NavLink>
+                                <NavLink
+                                    href={route('orders.index')}
+                                >
+                                    My Ordes
+                                </NavLink>
                             </div>
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
-                            <div className="relative ms-3">
+                            <div className="relative ms-3 flex items-center justify-center">
+                                {user.is_superadmin && <div className="bg-red-700 px-4 rounded-md text-white text-xs py-1">Administrator</div>}
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">

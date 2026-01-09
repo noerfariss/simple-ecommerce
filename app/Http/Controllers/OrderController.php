@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class OrderController extends Controller
 {
@@ -12,7 +14,15 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::query()
+            ->with(['items','items.product'])
+            ->where('user_id', Auth::id())
+            ->get();
+
+
+        return Inertia::render('Orders/Index', [
+            'orders' => $orders
+        ]);
     }
 
     /**
