@@ -21,7 +21,7 @@ class ProductFactory extends Factory
         return [
             'name' => $name,
             'price' => fake()->numberBetween(500, 2000),
-            'stock_quantity' => fake()->numberBetween(0, 77),
+            'stock_quantity' => fake()->numberBetween(0, 8),
             'slug' => Str::slug($name) . '-' . rand(111, 999)
         ];
     }

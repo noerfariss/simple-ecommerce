@@ -5,6 +5,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,6 +20,8 @@ Route::middleware('auth')->prefix('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('orders', OrderController::class);
+    Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
+    Route::post('/setting', [SettingController::class, 'update'])->name('setting.update');
 
     // cart
     Route::prefix('cart')->name('cart.')->group(function () {
